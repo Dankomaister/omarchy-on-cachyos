@@ -1,2 +1,2 @@
 # omarchy-on-cachyos
-Script to install Omarchy on bare CachyOS
+Script to install Omarchy on bare CachyOS install
