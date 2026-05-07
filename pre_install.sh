@@ -48,6 +48,18 @@ NVIDIA_EOF
 
 chmod +x install/config/hardware/nvidia.sh
 
+echo "==> Preserving CachyOS pacman config during Omarchy install"
+
+cp install/post-install/pacman.sh install/post-install/pacman.sh.omarchy-original
+
+cat > install/post-install/pacman.sh <<'PACMAN_POST_EOF'
+#!/bin/bash
+echo "Preserving CachyOS /etc/pacman.conf and /etc/pacman.d/mirrorlist."
+echo "The [omarchy] repo was added manually for CachyOS compatibility."
+PACMAN_POST_EOF
+
+chmod +x install/post-install/pacman.sh
+
 echo
 echo "Done!"
 echo "To install Omarchy run:"
