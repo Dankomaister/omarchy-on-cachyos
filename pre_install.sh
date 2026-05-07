@@ -60,6 +60,25 @@ PACMAN_POST_EOF
 
 chmod +x install/post-install/pacman.sh
 
+echo "==> Patching Omarchy Limine/Snapper script for CachyOS /boot permissions"
+
+cp install/login/limine-snapper.sh install/login/limine-snapper.sh.omarchy-original
+
+sed -i \
+  -e 's#\[\[ -f /boot/EFI/arch-limine/limine.conf \]\]#sudo test -f /boot/EFI/arch-limine/limine.conf#g' \
+  -e 's#\[\[ -f /boot/EFI/BOOT/limine.conf \]\]#sudo test -f /boot/EFI/BOOT/limine.conf#g' \
+  -e 's#\[\[ -f /boot/EFI/limine/limine.conf \]\]#sudo test -f /boot/EFI/limine/limine.conf#g' \
+  -e 's#\[\[ -f /boot/limine/limine.conf \]\]#sudo test -f /boot/limine/limine.conf#g' \
+  -e 's#\[\[ -f /boot/limine.conf \]\]#sudo test -f /boot/limine.conf#g' \
+  -e 's#grep "^\[\[:space:\]\]\*cmdline:" "$limine_config"#sudo grep "^[[:space:]]*cmdline:" "$limine_config"#g' \
+  -e 's#\[\[ -f $limine_config \]\]#sudo test -f "$limine_config"#g' \
+  -e 's#grep -q "^/+" /boot/limine.conf#sudo grep -q "^/+" /boot/limine.conf#g' \
+  -e 's#efibootmgr &>/dev/null#sudo efibootmgr \&>/dev/null#g' \
+  -e 's#<(efibootmgr | grep#<(sudo efibootmgr | grep#g' \
+  install/login/limine-snapper.sh
+
+chmod +x install/login/limine-snapper.sh
+
 echo
 echo "Done!"
 echo "To install Omarchy run:"
